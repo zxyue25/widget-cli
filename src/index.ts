@@ -13,7 +13,7 @@ const getCommand = () => {
     return commandsPath
 }
 
-const run = () => {
+const start = () => {
     const commandsPath = getCommand()
     program.version('0.1.0')
     commandsPath.map( commandPath => {
@@ -27,4 +27,4 @@ const run = () => {
     program.parse(process.argv);
 }
 
-run()
+start()

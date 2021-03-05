@@ -1,3 +1,3 @@
-process.chdir('')
+// process.chdir('')
 
-require('./src')
+require('./src/index.ts')
