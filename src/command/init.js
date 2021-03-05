@@ -3,7 +3,7 @@ const action = () => {
 }
 
 module.exports = {
-   command: 'init <template> <project>',
+   command: 'init',
    description: '初始化',
    action: action,
 }

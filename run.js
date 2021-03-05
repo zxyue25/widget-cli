@@ -1,3 +1,1 @@
- require('ts-node/register')
-
- require('./src')
+require('./src')
