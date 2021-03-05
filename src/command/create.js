@@ -13,7 +13,7 @@ const downloadCode = async (projectName) => {
         return false
     }
     // 下载之前做loading提示
-    console.log(`✨  Creating project in ${chalk.cyan(projectPath)}.`)
+    console.log(`\n✨  Creating project in ${chalk.cyan(projectPath)}.`)
     console.log('🗃  Initializing git repository...')
     const spinner = ora().start('This might take a while...\n\n');
     // 根据模板名下载对应的模板到本地
@@ -61,7 +61,7 @@ const checkExist = async (projectName) => {
         const answer =  await inquirer.prompt({
             type: 'list',
             name: 'checkExist',
-            message: `Target directory ${projectPath} already exists. Pick an action`,
+            message: `\nTarget directory ${projectPath} already exists. Pick an action`,
             choices: [
                 'Overwrite',
                 'Cancel'
@@ -74,11 +74,13 @@ const checkExist = async (projectName) => {
         } else {
             return false
         }
+
     }
+    return true
 }
 
 const action = (projectName) => {
-   downloadCode(projectName)
+    downloadCode(projectName)
 }
 
 module.exports = {
