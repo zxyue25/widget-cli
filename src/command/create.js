@@ -6,9 +6,10 @@ const ora = require('ora')
 const inquirer = require('inquirer')
 const logSymbols = require('log-symbols')
 const chalk = require('chalk')
+const { cwd } = require('../lib')
 
 const downloadCode = async (projectName) => {
-    const projectPath = path.join(process.cwd(), projectName)
+    const projectPath = path.join(cwd, projectName)
     if(!await checkExist(projectName)){
         return false
     }
@@ -17,7 +18,8 @@ const downloadCode = async (projectName) => {
     console.log('🗃  Initializing git repository...')
     const spinner = ora().start('This might take a while...\n\n');
     // 根据模板名下载对应的模板到本地
-    const downloadUrl = "https://github.com:zxyue25/vue-demo-cli-templateA#master"
+
+    const downloadUrl = "https://gitlab-jdd.jd.com:zhengxiuyue/widget-template#master"
     download(downloadUrl, projectName, {clone: true}, async err => {
         if(err){
           spinner.fail()
@@ -56,7 +58,7 @@ const downloadCode = async (projectName) => {
 }
 
 const checkExist = async (projectName) => {
-    const projectPath = path.join(process.cwd(), projectName)
+    const projectPath = path.join(cwd, projectName)
     if(fs.existsSync(projectPath)){
         const answer =  await inquirer.prompt({
             type: 'list',
