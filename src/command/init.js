@@ -1,9 +1,9 @@
 const action = () => {
-   console.log("create")
+   console.log("init")
 }
 
 module.exports = {
-   command: 'create',
+   command: 'init <template> <project>',
    description: '初始化',
    action: action,
 }

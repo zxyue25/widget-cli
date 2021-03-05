@@ -1,2 +1,3 @@
-#!/usr/bin/env node                        
-require('./build')
+#!/usr/bin/env node                 
+// require('./build')
+require('./src/index.js')
