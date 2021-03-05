@@ -165,7 +165,7 @@ const action = async () => {
    }
 }
 
-module.exports = {
+export default {
    command: 'init',
    description: '初始化',
    action: action,

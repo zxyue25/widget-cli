@@ -27,7 +27,7 @@ const downloadCode = async (projectName) => {
           return 
         }
         spinner.succeed()
-        answers = await inquirer.prompt([
+        const answers = await inquirer.prompt([
           {
               type: 'input',
               name: 'name',
@@ -85,7 +85,7 @@ const action = (projectName) => {
     downloadCode(projectName)
 }
 
-module.exports = {
+export default {
    command: 'create <projectName>',
    description: '初始化',
    action: action,

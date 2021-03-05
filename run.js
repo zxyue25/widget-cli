@@ -1,1 +1,3 @@
+process.chdir('')
+
 require('./src')

@@ -2,7 +2,7 @@ const action = () => {
    console.log("serve")
 }
 
-module.exports = {
+export default {
    command: 'serve',
    description: 'serve',
    action: action,
