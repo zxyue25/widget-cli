@@ -5,5 +5,5 @@ const action = () => {
 export default {
    command: 'serve',
    description: 'serve',
-   action: action,
+   action,
 }

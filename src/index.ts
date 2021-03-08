@@ -1,24 +1,20 @@
-const globby = require('globby')
-const path  = require('path')
-const commander  =  require('commander')
+import * as globby from 'globby'
+import * as commander from 'commander'
 const { program } = commander
 
 // 获取业务线
+let commandsPath = []
 const getCommand = () => {
-    let commands = []
-    const commandsPath = globby.sync('./command', { cwd:__dirname, deep:1 })
-    commandsPath.map( command =>  {
-        commands.push(path.basename(command, path.extname(command)))
-    })
+    commandsPath = (globby as any).sync('./command', { cwd:__dirname, deep:1 }) || []
     return commandsPath
 }
 
-const start = () => {
+function start() {
     const commandsPath = getCommand()
     program.version('0.1.0')
-    commandsPath.map( commandPath => {
+    commandsPath.forEach( commandPath => {
         const commandObj = require(`./${commandPath}`)
-        const { command, description, action } = commandObj
+        const { command, description, action } = commandObj.default
         program
             .command(command)
             .description(description)

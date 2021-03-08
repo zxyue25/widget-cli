@@ -1,16 +1,16 @@
-const inquirer = require('inquirer')
-const chalk = require('chalk')
-const logSymbols = require('log-symbols')
-const path = require('path')
-const globby = require('globby')
-const { cwd } = require('../lib')
-const fs = require('fs-extra')
+import * as path from 'path'
+import * as fs from 'fs-extra'
+import * as inquirer from 'inquirer'
+import * as logSymbols from 'log-symbols'
+import * as chalk from 'chalk'
+import * as globby from 'globby'
+import { cwd } from '../lib'
 
 const chooseType = async () => {
    const answer = await inquirer.prompt({
       type: 'list',
       name: 'type',
-      message: '请选择你要初始化的类型',
+      message: 'please choose the type',
       choices: [
          'page',
          'widget'
@@ -23,20 +23,27 @@ const inputName = async (type) => {
    const answer = await inquirer.prompt({
       type: 'input',
       name: 'name',
-      message: `请填写要初始化的${type}名称(建议用-分隔,如bread-crumb)`,
+      message: `${type} name: (${type}-demo)`,
+      default: `${type}-demo`
    })
    return answer.name
 }
 
 const checkExist = async (type, name) => {
-   const paths = globby.sync(path.join(cwd, 'src', `${type}s/*`), { cwd: __dirname, onlyDirectories: true, deep: 1 })
-   if(paths.indexOf(path.join(cwd, 'src', `${type}s/*`, name)) !== -1){
-      const answer = await inquirer.prompt({
-         type: 'confirm',
-         name: 'isExist',
-         message: `本地工程已存在${type} ${name}；是否覆盖本地工程`,
-      })
-      return answer.isExist
+   const paths = (globby as any).sync(path.join(cwd, 'src', `${type}s/*`), { cwd: __dirname, onlyDirectories: true, deep: 1 })
+   if(paths.indexOf(path.join(cwd, 'src', `${type}s`, name)) !== -1){
+      const answer =  await inquirer.prompt({
+         type: 'list',
+         name: 'checkExist',
+         message: `\nTarget directory ${type} ${name} already exists. Pick an action`,
+         choices: [
+             'Overwrite',
+             'Cancel'
+         ]
+     })
+      if(answer.checkExist === 'Cancel'){
+         return false
+      }
    }
    return true
 }
@@ -54,7 +61,8 @@ const initSrc = async (name) => {
          throw e
       }
    })
-   console.log(logSymbols.success, `${name}组件初始化完成,路径:${pathSrc}`)
+   console.log('\n')
+   console.log(logSymbols.success, `Finish creating file in ${chalk.yellow(pathSrc)}`)
 }
 
 const initExp = async (name) => {
@@ -80,7 +88,7 @@ export default {
          throw e
       }
    })
-   console.log(logSymbols.success, `${name}示例文件初始化完成,路径:${pathExp}/${name}.vue`)
+   console.log(logSymbols.success, `Finish creating file in ${chalk.yellow(pathExp + '/' + name + '.vue')}`)
 }
 
 const initDoc = async (name) => {
@@ -92,7 +100,7 @@ const initDoc = async (name) => {
          throw e
       }
    })
-   console.log(logSymbols.success, `${name}文档初始化完成,路径:${pathDoc}/${name}.md`)
+   console.log(logSymbols.success, `Finish creating file in ${chalk.yellow(pathDoc + '/' + name + '.md' )}`)
 }
 
 const initWidget = async (name) => {
@@ -138,7 +146,7 @@ new Vue({
          throw e
       }
    })
-   console.log(logSymbols.success, `page初始化完成,路径:${pathSrc}`)
+   console.log(logSymbols.success, `Finish creating file in ${chalk.yellow(pathSrc)}`)
 }
 
 const action = async () => {
@@ -159,14 +167,14 @@ const action = async () => {
             console.log(chalk.red(e))
          }
       }
-      console.log(logSymbols.success, chalk.green('初始化完成，请执行npm run dev'))
-   } else {
-      console.log(logSymbols.info, chalk.yellow('请重新执行npm run init初始化'))
+      console.log(`\n🎉  Successfully inited ${chalk.yellow(type, name)}.`)
+      console.log(`👉  Get started with the following commands: \n`)
+      console.log(chalk.cyan(`$ npm run serve\n`))
    }
 }
 
 export default {
    command: 'init',
    description: '初始化',
-   action: action,
+   action,
 }

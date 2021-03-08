@@ -5,5 +5,5 @@ const action = () => {
 export default {
    command: 'build',
    description: '初始化',
-   action: action,
+   action,
 }

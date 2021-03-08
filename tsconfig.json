@@ -35,6 +35,8 @@
         "**/*.test.ts",
         "temp"
     ],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "compileOnSave": false,
     "buildOnSave": false
 }

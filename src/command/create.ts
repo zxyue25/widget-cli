@@ -1,12 +1,13 @@
-const path = require('path')
-const fs = require('fs-extra')
-const download = require('download-git-repo')
-const handlebars = require('handlebars')
-const ora = require('ora')
-const inquirer = require('inquirer')
-const logSymbols = require('log-symbols')
-const chalk = require('chalk')
-const { cwd } = require('../lib')
+import * as path from 'path'
+import * as fs from 'fs-extra'
+import * as download from 'download-git-repo'
+import * as handlebars from 'handlebars'
+import * as ora from 'ora'
+import * as inquirer from 'inquirer'
+import * as logSymbols from 'log-symbols'
+import * as chalk from 'chalk'
+import { cwd } from '../lib'
+
 
 const downloadCode = async (projectName) => {
     const projectPath = path.join(cwd, projectName)
@@ -51,7 +52,7 @@ const downloadCode = async (projectName) => {
         const packageResult = handlebars.compile(packageContent)(answers)
         //将解析后的结果重写到package.json文件中
         fs.writeFileSync(packagePath,packageResult)
-        console.log(`🎉  Successfully created project ${chalk.yellow(projectName)}.`)
+        console.log(`\n🎉  Successfully created project ${chalk.yellow(projectName)}.`)
         console.log(`👉  Get started with the following commands: \n`)
         console.log(chalk.cyan(`$ cd ${projectName}\n$ npm run serve\n`))
     })
@@ -70,13 +71,12 @@ const checkExist = async (projectName) => {
             ]
         })
         if(answer.checkExist === 'Overwrite'){
-            console.log(`Removing ${chalk.cyan(projectPath)}...\n\n`)
+            console.log(`Removing ${chalk.cyan(projectPath)}...\n`)
             fs.removeSync(projectPath)
             return true
         } else {
             return false
         }
-
     }
     return true
 }
@@ -88,5 +88,5 @@ const action = (projectName) => {
 export default {
    command: 'create <projectName>',
    description: '初始化',
-   action: action,
+   action,
 }
