@@ -19,35 +19,31 @@ const downloadCode = async (projectName) => {
     const spinner = ora().start('This might take a while...\n\n');
     // 根据模板名下载对应的模板到本地
 
-    
-    // const downloadUrl = "https://gitlab-jdd.jd.com:zhengxiuyue/widget-template#master"
-    //  download(downloadUrl, projectName, {clone: true}, async err => {
-    //      if(err){
-    //        spinner.fail()
-    //        console.log(logSymbols.error, chalk.red(err))
-    //        return 
-    //      }
-    //  })
-    try {
-        await fs.copy(path.join(__dirname, '..', '..', 'template'), path.join(cwd, projectName))
+    const downloadUrl = "https://gitlab-jdd.jd.com:zhengxiuyue/widget-template#master"
+    download(downloadUrl, projectName, {clone: true}, async err => {
+        if(err){
+          spinner.fail()
+          console.log(logSymbols.error, chalk.red(err))
+          return 
+        }
         spinner.succeed()
         const answers = await inquirer.prompt([
-            {
-                    type: 'input',
-                    name: 'name',
-                    message: `package name: (${projectName})`,
-                    default: projectName
-            },
-            {
-                    type: 'input',
-                    name: 'description',
-                    message: 'description'
-            },
-            {
-                    type: 'input',
-                    name: 'author',
-                    message: 'author'
-            },
+          {
+              type: 'input',
+              name: 'name',
+              message: `package name: (${projectName})`,
+              default: projectName
+          },
+          {
+              type: 'input',
+              name: 'description',
+              message: 'description'
+          },
+          {
+              type: 'input',
+              name: 'author',
+              message: 'author'
+          },
         ])
         const packagePath = `${projectName}/package.json`
         const packageContent = fs.readFileSync(packagePath,'utf-8')
@@ -58,11 +54,7 @@ const downloadCode = async (projectName) => {
         console.log(`\n🎉  Successfully created project ${chalk.yellow(projectName)}.`)
         console.log(`👉  Get started with the following commands: \n`)
         console.log(chalk.cyan(`$ cd ${projectName}\n$ npm run serve\n`))
-    } catch (err) {
-        spinner.fail()
-        console.log(err, chalk.red(err))
-        return 
-    }   
+    })
 }
 
 const checkExist = async (projectName) => {
@@ -93,7 +85,7 @@ const action = (projectName) => {
 }
 
 export default {
-   command: 'create <projectName>',
+   command: 'create-git <projectName>',
    description: '初始化',
    action,
 }
